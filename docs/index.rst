@@ -1,9 +1,7 @@
-.. Foo documentation master file, created by
-   sphinx-quickstart on Mon Jul 21 22:05:54 2025.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+led_strip_spi: SPI-based driver for SK9822/APA102 LED strips
+============================================================
 
-Welcome to Foo's documentation!
-===============================
-
-.. doxygenfile:: template-component.h
+ .. doxygenfile:: led_strip_spi.h
+ .. doxygenfile:: led_strip_spi_esp32.h
+ .. doxygenfile:: led_strip_spi_esp8266.h
+ .. doxygenfile:: led_strip_spi_sk9822.h
