@@ -1,0 +1,29 @@
+---
+version: 1.0.0
+description: SPI-based driver for SK9822/APA102 LED strips
+license: MIT
+targets:
+  - esp32
+  - esp32c3
+  - esp32c3
+  - esp32c5
+  - esp32c6
+  - esp32h2
+  - esp32p4
+  - esp32s2
+  - esp32s3
+  - esp8266
+dependencies:
+  esp-idf-lib/color:
+    version: "*"
+  esp-idf-lib/esp_idf_lib_helpers:
+    version: "*"
+maintainers: Tomoyuki Sakurai (@trombik) <y@trombik.org>
+url: https://github.com/esp-idf-lib/core
+repository: https://github.com/esp-idf-lib/led_strip_spi
+documentation: https://esp-idf-lib.github.io/led_strip_spi/
+issues: https://github.com/esp-idf-lib/led_strip_spi/issues
+discussion: https://github.com/esp-idf-lib/core/discussions
+files:
+  exclude:
+    - docs
