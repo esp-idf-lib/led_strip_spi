@@ -11,7 +11,7 @@ SPI-based driver for SK9822/APA102 LED strips.
 ## Installation
 
 ```sh
-idf.py add-dependency "esp-idf-lib/led_strip_spi^1.0.0
+idf.py add-dependency esp-idf-lib/led_strip_spi^1.0.0
 ```
 
 ## Support
