@@ -1,5 +1,9 @@
 # esp-idf-lib/led_strip_spi
 
+[![Build examples](https://github.com/esp-idf-lib/led_strip_spi/actions/workflows//build.yml/badge.svg)](https://github.com/esp-idf-lib/led_strip_spi/actions/workflows//build.yml)
+[![Build docs](https://github.com/esp-idf-lib/led_strip_spi/actions/workflows//build-docs.yml/badge.svg)](https://github.com/esp-idf-lib/led_strip_spi/actions/workflows//build-docs.yml)
+[![Validation](https://github.com/esp-idf-lib/led_strip_spi/actions/workflows//validate-component.yml/badge.svg)](https://github.com/esp-idf-lib/led_strip_spi/actions/workflows//validate-component.yml)
+
 SPI-based driver for SK9822/APA102 LED strips.
 
 * [Documentation](https://esp-idf-lib.github.io/led_strip_spi/)
@@ -11,7 +15,7 @@ SPI-based driver for SK9822/APA102 LED strips.
 ## Installation
 
 ```sh
-idf.py add-dependency esp-idf-lib/led_strip_spi^1.0.0
+idf.py add-dependency esp-idf-lib/led_strip_spi
 ```
 
 ## Support
