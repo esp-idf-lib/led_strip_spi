@@ -1,5 +1,5 @@
 ---
-version: 1.0.6
+version: 1.0.7
 description: SPI-based driver for SK9822/APA102 LED strips
 license: MIT
 targets:
