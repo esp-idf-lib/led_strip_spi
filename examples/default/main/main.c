@@ -31,7 +31,8 @@ static esp_err_t rainbow(led_strip_spi_t *strip)
     color = led_effect_color_wheel_rgb(pos);
     ESP_LOGI(TAG, "r: 0x%02x g: 0x%02x b: 0x%02x", color.r, color.g, color.b);
 
-    if ((err = led_strip_spi_fill(strip, 0, strip->length, color)) != ESP_OK) {
+    if ((err = led_strip_spi_fill(strip, 0, strip->length, color)) != ESP_OK)
+    {
         ESP_LOGE(TAG, "led_strip_spi_fill(): %s", esp_err_to_name(err));
         goto fail;
     }
@@ -48,10 +49,12 @@ static esp_err_t rainbow_scroll(led_strip_spi_t *strip)
     esp_err_t err = ESP_FAIL;
     rgb_t color;
 
-    for (int i = 0; i < N_PIXEL; i++) {
+    for (int i = 0; i < N_PIXEL; i++)
+    {
         color = led_effect_color_wheel_rgb(pos + offset * i);
         err = led_strip_spi_set_pixel(strip, i, color);
-        if (err != ESP_OK) {
+        if (err != ESP_OK)
+        {
             ESP_LOGE(TAG, "led_strip_spi_set_pixel(): %s", esp_err_to_name(err));
             goto fail;
         }
@@ -76,7 +79,8 @@ static esp_err_t simple_rgb(led_strip_spi_t *strip)
     color.b =  c        & 0xff;
     ESP_LOGI(TAG, "r: 0x%02x g: 0x%02x b: 0x%02x", color.r, color.g, color.b);
 
-    if ((err = led_strip_spi_fill(strip, 0, strip->length, color)) != ESP_OK) {
+    if ((err = led_strip_spi_fill(strip, 0, strip->length, color)) != ESP_OK)
+    {
         ESP_LOGE(TAG, "led_strip_spi_fill(): %s", esp_err_to_name(err));
         goto fail;
     }
@@ -97,11 +101,13 @@ static esp_err_t fade_scroll(led_strip_spi_t *strip)
     color.b = 0;
     color.g = 0;
 
-    for (int i = 0; i < N_PIXEL; i++) {
-        uint8_t tmp = (i + pos) % sizeof(brightness_curve); 
+    for (int i = 0; i < N_PIXEL; i++)
+    {
+        uint8_t tmp = (i + pos) % sizeof(brightness_curve);
         brightness =  brightness_curve[tmp];
         err = led_strip_spi_set_pixel_brightness(strip, i, color, brightness);
-        if (err != ESP_OK) {
+        if (err != ESP_OK)
+        {
             ESP_LOGE(TAG, "led_strip_spi_set_pixel_brightness(): %s", esp_err_to_name(err));
             goto fail;
         }
@@ -131,10 +137,12 @@ void test(void *pvParameters)
 
     /* turn off all LEDs */
     ESP_ERROR_CHECK(led_strip_spi_flush(&strip));
-    while (1) {
+    while (1)
+    {
         /* rainbow */
         ESP_LOGI(TAG, "Rainbow pattern");
-        for (int i = 0; i < 255; i++) {
+        for (int i = 0; i < 255; i++)
+        {
             ESP_ERROR_CHECK(rainbow(&strip));
             ESP_ERROR_CHECK(led_strip_spi_flush(&strip));
 
@@ -143,7 +151,8 @@ void test(void *pvParameters)
 
         /* simple RGB */
         ESP_LOGI(TAG, "Simple RGB pattern");
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++)
+        {
             ESP_ERROR_CHECK(simple_rgb(&strip));
             ESP_ERROR_CHECK(led_strip_spi_flush(&strip));
 
@@ -152,7 +161,8 @@ void test(void *pvParameters)
 
         /* rainbow scroll */
         ESP_LOGI(TAG, "Scroll rainbow pattern");
-        for (int i = 0; i < 2048; i++) {
+        for (int i = 0; i < 2048; i++)
+        {
             ESP_ERROR_CHECK(rainbow_scroll(&strip));
             ESP_ERROR_CHECK(led_strip_spi_flush(&strip));
 
@@ -161,7 +171,8 @@ void test(void *pvParameters)
 
         /* fade scroll */
         ESP_LOGI(TAG, "Fade scroll pattern");
-        for (int i = 0; i < 2048; i++) {
+        for (int i = 0; i < 2048; i++)
+        {
             ESP_ERROR_CHECK(fade_scroll(&strip));
             ESP_ERROR_CHECK(led_strip_spi_flush(&strip));
 
@@ -175,20 +186,24 @@ void app_main()
 {
     esp_err_t err;
     err = led_strip_spi_install();
-    if (err != ESP_OK) {
+    if (err != ESP_OK)
+    {
         ESP_LOGE(TAG, "led_strip_spi_install(): %s", esp_err_to_name(err));
         goto fail;
     }
-    if (xTaskCreate(test, "test", configMINIMAL_STACK_SIZE * 5, NULL, 5, NULL) != pdPASS) {
+    if (xTaskCreate(test, "test", configMINIMAL_STACK_SIZE * 5, NULL, 5, NULL) != pdPASS)
+    {
         ESP_LOGE(TAG, "xTaskCreate(): failed");
         goto fail;
     }
-    while (1) {
+    while (1)
+    {
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
 fail:
     ESP_LOGE(TAG, "Test failed");
-    while (1) {
+    while (1)
+    {
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }

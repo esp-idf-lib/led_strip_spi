@@ -61,7 +61,8 @@ esp_err_t led_strip_spi_install()
     esp_err_t err;
 
     mutex = xSemaphoreCreateMutex();
-    if (mutex == NULL) {
+    if (mutex == NULL)
+    {
         err = ESP_FAIL;
         ESP_LOGE(TAG, "xSemaphoreCreateMutex(): failed");
         goto fail;
@@ -77,7 +78,8 @@ static esp_err_t led_strip_spi_init_esp32(led_strip_spi_t *strip)
     CHECK_ARG(strip);
 
     esp_err_t err = ESP_FAIL;
-    spi_bus_config_t bus_config = {
+    spi_bus_config_t bus_config =
+    {
         .mosi_io_num = strip->mosi_io_num,
         .sclk_io_num = strip->sclk_io_num,
         .miso_io_num = -1,
@@ -91,7 +93,8 @@ static esp_err_t led_strip_spi_init_esp32(led_strip_spi_t *strip)
         .flags = SPICOMMON_BUSFLAG_MASTER,
         .max_transfer_sz = strip->max_transfer_sz,
     };
-    spi_device_interface_config_t device_interface_config = {
+    spi_device_interface_config_t device_interface_config =
+    {
         .clock_speed_hz = strip->clock_speed_hz,
         .mode = 3,
         .spics_io_num = -1,
@@ -101,14 +104,16 @@ static esp_err_t led_strip_spi_init_esp32(led_strip_spi_t *strip)
         .dummy_bits = 0,
     };
 
-    if (xSemaphoreTake(mutex, MUTEX_TIMEOUT) != pdTRUE) {
+    if (xSemaphoreTake(mutex, MUTEX_TIMEOUT) != pdTRUE)
+    {
         err = ESP_FAIL;
         ESP_LOGE(TAG, "xSemaphoreTake(): timeout");
         goto fail_without_give;
     }
 
     strip->buf = heap_caps_malloc(LED_STRIP_SPI_BUFFER_SIZE(strip->length), MALLOC_CAP_DMA | MALLOC_CAP_32BIT);
-    if (strip->buf == NULL) {
+    if (strip->buf == NULL)
+    {
         ESP_LOGE(TAG, "heap_caps_malloc()");
         err = ESP_ERR_NO_MEM;
         goto fail;
@@ -121,7 +126,8 @@ static esp_err_t led_strip_spi_init_esp32(led_strip_spi_t *strip)
     /* type-specific initialization  */
 #if CONFIG_LED_STRIP_SPI_USING_SK9822
     err = led_strip_spi_sk9822_buf_init(strip);
-    if (err != ESP_OK) {
+    if (err != ESP_OK)
+    {
         ESP_LOGE(TAG, "led_strip_spi_sk9822_buf_init(): %s", esp_err_to_name(err));
         goto fail;
     }
@@ -129,20 +135,23 @@ static esp_err_t led_strip_spi_init_esp32(led_strip_spi_t *strip)
     ESP_LOGD(TAG, "SPI buffer initialized");
 
     err = spi_bus_initialize(strip->host_device, &bus_config, strip->dma_chan);
-    if (err != ESP_OK) {
+    if (err != ESP_OK)
+    {
         ESP_LOGE(TAG, "spi_bus_initialize(): %s", esp_err_to_name(err));
         goto fail;
     }
     ESP_LOGD(TAG, "SPI bus initialized");
 
     err = spi_bus_add_device(strip->host_device, &device_interface_config, &strip->device_handle);
-    if (err != ESP_OK) {
+    if (err != ESP_OK)
+    {
         ESP_LOGE(TAG, "spi_bus_add_device(): %s", esp_err_to_name(err));
         goto fail;
     }
     ESP_LOGI(TAG, "LED strip initialized");
 fail:
-    if (xSemaphoreGive(mutex) != pdTRUE) {
+    if (xSemaphoreGive(mutex) != pdTRUE)
+    {
         ESP_LOGE(TAG, "xSemaphoreGive(): failed");
     }
 fail_without_give:
@@ -155,7 +164,8 @@ static esp_err_t led_strip_spi_init_esp8266(led_strip_spi_t *strip)
 {
     esp_err_t err;
     spi_config_t spi_config;
-    spi_interface_t interface_config = {
+    spi_interface_t interface_config =
+    {
 
         /* SPI mode 3, CPOL = 1, CPHA = 1 */
         .cpol = 1,
@@ -170,14 +180,16 @@ static esp_err_t led_strip_spi_init_esp8266(led_strip_spi_t *strip)
         .reserved9 = 23,
     };
 
-    if (xSemaphoreTake(mutex, MUTEX_TIMEOUT) != pdTRUE) {
+    if (xSemaphoreTake(mutex, MUTEX_TIMEOUT) != pdTRUE)
+    {
         err = ESP_FAIL;
         ESP_LOGE(TAG, "xSemaphoreTake(): timeout");
         goto fail_without_give;
     }
 
     strip->buf = malloc(LED_STRIP_SPI_BUFFER_SIZE(strip->length));
-    if (strip->buf == NULL) {
+    if (strip->buf == NULL)
+    {
         ESP_LOGE(TAG, "malloc()");
         err = ESP_ERR_NO_MEM;
         goto fail;
@@ -186,7 +198,8 @@ static esp_err_t led_strip_spi_init_esp8266(led_strip_spi_t *strip)
 
 #if CONFIG_LED_STRIP_SPI_USING_SK9822
     err = led_strip_spi_sk9822_buf_init(strip);
-    if (err != ESP_OK) {
+    if (err != ESP_OK)
+    {
         ESP_LOGE(TAG, "led_strip_spi_sk9822_buf_init(): %s", esp_err_to_name(err));
         goto fail;
     }
@@ -198,14 +211,16 @@ static esp_err_t led_strip_spi_init_esp8266(led_strip_spi_t *strip)
     spi_config.event_cb = NULL;
 
     err = spi_init(HSPI_HOST, &spi_config);
-    if (err != ESP_OK) {
+    if (err != ESP_OK)
+    {
         ESP_LOGE(TAG, "spi_init(): %s", esp_err_to_name(err));
         goto fail;
     }
     ESP_LOGI(TAG, "SPI bus initialized");
     ESP_LOGI(TAG, "LED strip initialized");
 fail:
-    if (xSemaphoreGive(mutex) != pdTRUE) {
+    if (xSemaphoreGive(mutex) != pdTRUE)
+    {
         ESP_LOGE(TAG, "xSemaphoreGive(): failed");
     }
 fail_without_give:
@@ -239,17 +254,20 @@ static esp_err_t led_strip_spi_flush_esp32(led_strip_spi_t *strip)
     spi_transaction_t* t;
 
     CHECK_ARG(strip);
-    if (!strip->transaction.tx_buffer) {
+    if (!strip->transaction.tx_buffer)
+    {
         strip->transaction.tx_buffer = strip->buf;
     }
     strip->transaction.tx_buffer = strip->buf;
     err = spi_device_queue_trans(strip->device_handle, &strip->transaction, portMAX_DELAY);
-    if (err != ESP_OK) {
+    if (err != ESP_OK)
+    {
         ESP_LOGE(TAG, "spi_device_queue_trans(): %s", esp_err_to_name(err));
         goto fail;
     }
     err = spi_device_get_trans_result(strip->device_handle, &t, portMAX_DELAY);
-    if (err != ESP_OK) {
+    if (err != ESP_OK)
+    {
         ESP_LOGE(TAG, "spi_device_get_trans_result(): %s", esp_err_to_name(err));
         goto fail;
     }
@@ -278,32 +296,38 @@ static esp_err_t led_strip_spi_flush_esp8266(led_strip_spi_t *strip)
     mosi_buffer_block_size = LED_STRIP_SPI_BUFFER_SIZE(strip->length) / ESP8266_SPI_MAX_DATA_LENGTH;
     mosi_buffer_block_size_mod = LED_STRIP_SPI_BUFFER_SIZE(strip->length) % ESP8266_SPI_MAX_DATA_LENGTH;
 
-    if (xSemaphoreTake(mutex, MUTEX_TIMEOUT) != pdTRUE) {
+    if (xSemaphoreTake(mutex, MUTEX_TIMEOUT) != pdTRUE)
+    {
         err = ESP_FAIL;
         ESP_LOGE(TAG, "xSemaphoreTake(): timeout");
         goto fail_without_give;
     }
 
-    for (int i = 0; i < mosi_buffer_block_size; i++) {
+    for (int i = 0; i < mosi_buffer_block_size; i++)
+    {
         trans.bits.mosi = ESP8266_SPI_MAX_DATA_LENGTH * 8; // bits, not bytes
         trans.mosi = strip->buf + ESP8266_SPI_MAX_DATA_LENGTH * i;
         err = spi_trans(HSPI_HOST, &trans);
-        if (err != ESP_OK) {
+        if (err != ESP_OK)
+        {
             ESP_LOGE(TAG, "spi_trans(): %s", esp_err_to_name(err));
             goto fail;
         }
     }
-    if (mosi_buffer_block_size_mod > 0) {
+    if (mosi_buffer_block_size_mod > 0)
+    {
         trans.bits.mosi = mosi_buffer_block_size_mod * 8; // bits, not bytes
         trans.mosi = strip->buf + ESP8266_SPI_MAX_DATA_LENGTH * mosi_buffer_block_size;
         err = spi_trans(HSPI_HOST, &trans);
-        if (err != ESP_OK) {
+        if (err != ESP_OK)
+        {
             ESP_LOGE(TAG, "spi_trans(): %s", esp_err_to_name(err));
             goto fail;
         }
     }
 fail:
-    if (xSemaphoreGive(mutex) != pdTRUE) {
+    if (xSemaphoreGive(mutex) != pdTRUE)
+    {
         ESP_LOGE(TAG, "xSemaphoreGive(): failed");
     }
 fail_without_give:
@@ -348,9 +372,11 @@ esp_err_t led_strip_spi_set_pixels_brightness(led_strip_spi_t*strip, const int s
 {
     esp_err_t err = ESP_FAIL;
 
-    for (int i = 0; i < len; i++) {
+    for (int i = 0; i < len; i++)
+    {
         err = led_strip_spi_set_pixel_brightness(strip, start + i, data, brightness);
-        if (err != ESP_OK) {
+        if (err != ESP_OK)
+        {
             ESP_LOGE(TAG, "led_strip_spi_set_pixel(): %s", esp_err_to_name(err));
             goto fail;
         }
@@ -363,7 +389,8 @@ esp_err_t led_strip_spi_fill_brightness(led_strip_spi_t*strip, size_t start, siz
 {
     CHECK_ARG(strip && len && start + len <= strip->length);
 
-    for (size_t i = start; i < len; i++) {
+    for (size_t i = start; i < len; i++)
+    {
         CHECK(led_strip_spi_set_pixel_brightness(strip, i, color, brightness));
     }
     return ESP_OK;

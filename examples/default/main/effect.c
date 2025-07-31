@@ -52,6 +52,6 @@ rgb_t led_effect_color_wheel_rgb(uint8_t pos)
     next_color = led_effect_color_wheel(pos);
     next_pixel.r = (next_color >> 16) & 0xff;
     next_pixel.g = (next_color >>  8) & 0xff;
-    next_pixel.b = (next_color      );
+    next_pixel.b = (next_color);
     return next_pixel;
 }

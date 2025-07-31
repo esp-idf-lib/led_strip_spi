@@ -30,14 +30,17 @@ esp_err_t led_strip_spi_set_pixel_sk9822(led_strip_spi_t *strip, size_t num, rgb
 {
     int index = (num + 1) * 4;
     uint8_t cooked_brightness = 0;
-    /* Don't divided the range equal instead, the bottom 10 % is actually 0 brightness 
+    /* Don't divided the range equal instead, the bottom 10 % is actually 0 brightness
        then every 3 percent after that increase the brightness level by 1 */
-    if (brightness >= 100) {
+    if (brightness >= 100)
+    {
         cooked_brightness = 31;
-    } else if (brightness > 7){
+    }
+    else if (brightness > 7)
+    {
         cooked_brightness = (brightness - 7) / 3;
     }
-    ((uint8_t *)strip->buf)[index    ] = LED_STRIP_SPI_FRAME_SK9822_LED_MSB3 | 
+    ((uint8_t *)strip->buf)[index    ] = LED_STRIP_SPI_FRAME_SK9822_LED_MSB3 |
                                          (cooked_brightness & ((1 << LED_STRIP_SPI_FRAME_SK9822_LED_BRIGHTNESS_BITS) - 1));
     ((uint8_t *)strip->buf)[index + 1] = color.b;
     ((uint8_t *)strip->buf)[index + 2] = color.g;
@@ -48,7 +51,8 @@ esp_err_t led_strip_spi_set_pixel_sk9822(led_strip_spi_t *strip, size_t num, rgb
 esp_err_t led_strip_spi_sk9822_buf_init(led_strip_spi_t *strip)
 {
     /* set mandatory bits in all LED frames */
-    for (int i = 1; i <= strip->length; i++) {
+    for (int i = 1; i <= strip->length; i++)
+    {
         ((uint8_t *)strip->buf)[i * 4] = LED_STRIP_SPI_FRAME_SK9822_LED_MSB3;
     }
     return ESP_OK;
