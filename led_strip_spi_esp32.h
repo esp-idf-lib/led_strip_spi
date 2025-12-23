@@ -35,11 +35,7 @@
 #include <esp_idf_version.h>
 #include <driver/spi_master.h>
 
-#if ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(4, 0, 0)
-#define LED_STRIP_SPI_DEFAULT_HOST_DEVICE  HSPI_HOST
-#else
-#define LED_STRIP_SPI_DEFAULT_HOST_DEVICE  SPI2_HOST ///< Default is `SPI2_HOST` (`HSPI_HOST` if `esp-idf` version is v3.x).
-#endif
+#define LED_STRIP_SPI_DEFAULT_HOST_DEVICE  HELPER_SPI_HOST_DEFAULT
 
 #if defined(CONFIG_IDF_TARGET_ESP32C2) || defined(CONFIG_IDF_TARGET_ESP32C3) \
     || defined(CONFIG_IDF_TARGET_ESP32C6)
