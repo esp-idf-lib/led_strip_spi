@@ -10,8 +10,7 @@ The example runs the following effects in a loop.
 
 ## Configuration
 
-You can change the number of pixels in a strip by `idf.py menuconfig` or `make
-menuconfig`. See `CONFIG_EXAMPLE_N_PIXEL` under `Example configuration`. The
+You can change the number of pixels in a strip with `idf.py menuconfig`. See `CONFIG_EXAMPLE_N_PIXEL` under `Example configuration`. The
 default is 8 pixels.
 
 ## Hookup
@@ -19,8 +18,8 @@ default is 8 pixels.
 | Pin on `SK9822` | Destination                  |
 |-----------------|------------------------------|
 | `5V`            | `5V`                         |
-| `CI`            | `GPIO14` (ESP32 and ESP8266) or `GPIO6` (ESP32C3) |
-| `DI`            | `GPIO13` (ESP32 and ESP8266) or `GPIO7` (ESP32C3) |
+| `CI`            | `GPIO14` (ESP32) or `GPIO6` (ESP32C3) |
+| `DI`            | `GPIO13` (ESP32) or `GPIO7` (ESP32C3) |
 | `GND`           | `GND`                        |
 
 `SK9822` LED strip has `CI` and `DI` at both end of the strip. Make sure the
